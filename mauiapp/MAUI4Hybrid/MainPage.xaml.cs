@@ -7,18 +7,10 @@
         public MainPage()
         {
             InitializeComponent();
-        }
 
-        private void OnCounterClicked(object sender, EventArgs e)
-        {
-            count++;
+            string host = "http://127.0.0.1:" + M4HttpServer.Port;
 
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
-
-            SemanticScreenReader.Announce(CounterBtn.Text);
+            wb.Source = host + "/index.html";
         }
     }
 

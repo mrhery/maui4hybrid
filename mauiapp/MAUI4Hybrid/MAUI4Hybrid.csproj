@@ -57,6 +57,25 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiCss Remove="www\assets\css\style.css" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="www\assets\images\maui4hybrid.png" />
+	  <None Remove="www\assets\js\script.js" />
+	  <None Remove="www\assets\vendor\jquery\jquery.js" />
+	  <None Remove="www\index.html" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="www\assets\css\style.css" />
+	  <EmbeddedResource Include="www\assets\images\maui4hybrid.png" />
+	  <EmbeddedResource Include="www\assets\js\script.js" />
+	  <EmbeddedResource Include="www\assets\vendor\jquery\jquery.js" />
+	  <EmbeddedResource Include="www\index.html" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />

@@ -6,7 +6,13 @@
         {
             InitializeComponent();
 
-            MainPage = new AppShell();
+            Task.Run(() =>
+            {
+                M4HttpServer.Init();
+                M4HttpServer.Start();
+            });
+
+            MainPage = new MainPage();
         }
     }
 }

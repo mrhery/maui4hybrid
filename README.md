@@ -4,7 +4,7 @@ A simple solution to run your HTML5 program inside MAUI app which support cross 
 # Why MAUI4Hybrid
 I use Cordova a lot few years ago, but since the cordova updates, most of the core plugin has been removed. And to write those plugin, you will need dual-language experts, in Kotlin/Java for Android and Swift/Objective-C for iOS. 
 
-So I developed a simple HTTP server base on almighty .NET framework and magical nuget packages, I succeedingly run our telecommunication app (which include WebRTC, Contacts, Local Storage, Location and Notification) in the app which seems easier than cordova plugin implementation.
+So I developed a simple HTTP server base on almighty .NET framework and magical nuget packages, I succeedingly run our telecommunication app (which include WebRTC, Contacts, Local Storage, Local DB SQLite, Location and Notification) in the app which seems easier than cordova plugin implementation.
 
 # How to use?
 There are 3 folders in this directory,
@@ -17,4 +17,8 @@ For number 1 & 2, you can choose either one, copy/paste and rename to you projec
 # Different to Cordova?
 In cordova project, the www is stored as app's assets which it took few second for hacker to extract our HTML code. But in this MAUI4Hybrid, all codes are stored as Embedded Resource which it might took sometime to extract our site from the application.
 
-And since the www stored as Embedded Resource, so we only need a single www folder in MAUI project itself rather than put www folder on every platform (Android, iOS etc.). 
+And since the www stored as Embedded Resource, so we only need a single www folder in MAUI project itself rather than put www folder on every platform (Android, iOS etc.).
+
+#  Usage Warning
+1. Always make sure all files under www folder are set it build action to "Embedded Resource".
+2. Every filename cannot has dual dot (.) like `jquery.min.js`, `aaa.bbb.html`. Must always change to single dot like `jquery.js`, `aaabbb.html` and so on.
