@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace MAUI4Hybrid
@@ -11,6 +12,7 @@ namespace MAUI4Hybrid
     public class M4HttpServer
     {
         static HttpListener server;
+        public static Dictionary<string, string> Data = new Dictionary<string, string>();
 
         public static string Dir = "www";
         static string names = typeof(App).Namespace;
@@ -141,7 +143,7 @@ namespace MAUI4Hybrid
                                     default:
                                         Stream s1 = assembly.GetManifestResourceStream(page);
                                         StreamReader r1 = new StreamReader(s1);
-                                        string ss1 = r1.ReadToEnd();
+                                        string ss1 = RenderText(r1.ReadToEnd());
 
                                         byte[] b1 = Encoding.UTF8.GetBytes(ss1);
                                         response.ContentLength64 = b1.Length;
@@ -166,6 +168,15 @@ namespace MAUI4Hybrid
 
                 context.Response.Close();
             }
+        }
+
+        static string RenderText(string input)
+        {
+            return Regex.Replace(input, @"\{\{(\w+)\}\}", match =>
+            {
+                string key = match.Groups[1].Value;
+                return Data.TryGetValue(key, out string value) ? value : match.Value;
+            });
         }
 
         public static void Stop()
