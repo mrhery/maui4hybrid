@@ -22,3 +22,5 @@ And since the www stored as Embedded Resource, so we only need a single www fold
 #  Usage Warning
 1. Always make sure all files under www folder are set it build action to "Embedded Resource".
 2. Every filename cannot has dual dot (.) like `jquery.min.js`, `aaa.bbb.html`. Must always change to single dot like `jquery.js`, `aaabbb.html` and so on.
+3. Filename in www folder must cannot contains "-" character.
+4. To run the apps, in android must add `android:usesCleartextTraffic="true"` in `<application ...>` tag.
