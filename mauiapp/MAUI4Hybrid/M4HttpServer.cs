@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -16,6 +19,8 @@ namespace MAUI4Hybrid
 
         public static string Dir = "www";
         static string names = typeof(App).Namespace;
+        public static dynamic configure = new ExpandoObject();
+
         public static bool IsLitening
         {
             get
@@ -33,6 +38,8 @@ namespace MAUI4Hybrid
             server.Prefixes.Add("http://127.0.0.1:" + port + @"/");
             server.Prefixes.Add("http://127.0.0.1:" + port + @"/");
             Port = port;
+
+            ReadConfig();
         }
 
         public static async void Start()
@@ -143,7 +150,7 @@ namespace MAUI4Hybrid
                                     default:
                                         Stream s1 = assembly.GetManifestResourceStream(page);
                                         StreamReader r1 = new StreamReader(s1);
-                                        string ss1 = RenderText(r1.ReadToEnd());
+                                        string ss1 = RenderText(RenderHTML(r1.ReadToEnd()));
 
                                         byte[] b1 = Encoding.UTF8.GetBytes(ss1);
                                         response.ContentLength64 = b1.Length;
@@ -175,8 +182,83 @@ namespace MAUI4Hybrid
             return Regex.Replace(input, @"\{\{(\w+)\}\}", match =>
             {
                 string key = match.Groups[1].Value;
-                return Data.TryGetValue(key, out string value) ? value : match.Value;
+                string value;
+
+                if(Data.TryGetValue(key, out value))
+                {
+                    return value;
+                }
+
+                value = FetchConfigData(key);
+
+                return value ?? match.Value;
             });
+        }
+
+        static string RenderHTML(string input)
+        {
+            return Regex.Replace(input, @"\[\[include:(.+?)\]\]", match =>
+            {
+                string resourceName = $"{names}.{Dir}.{match.Groups[1].Value.Replace('/', '.').Replace('\\', '.')}";
+                string resourceContent = GetEmbeddedResourceContent(resourceName);
+                return resourceContent ?? match.Value;
+            });
+        }
+
+        static string FetchConfigData(string propertyName)
+        {
+            try
+            {
+                string[] properties = propertyName.Split('.');
+                foreach (var prop in properties)
+                {
+                    if (configure is ExpandoObject expando && ((IDictionary<string, object>)expando).ContainsKey(prop))
+                    {
+                        configure = configure[prop];
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                return configure.ToString();
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        static void ReadConfig()
+        {
+            string jsonContent = GetEmbeddedResourceContent(names + "." + Dir + ".configure.json");
+
+            if(jsonContent != null)
+            {
+                configure = JsonConvert.DeserializeObject<ExpandoObject>(jsonContent);
+            }
+            else
+            {
+                Debug.WriteLine("==============================");
+                Debug.WriteLine("json is null");
+                Debug.WriteLine("==============================");
+            }
+        }
+
+        static string GetEmbeddedResourceContent(string resourceName)
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            {
+                if (stream == null)
+                {
+                    return null;
+                }
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    return reader.ReadToEnd();
+                }
+            }
         }
 
         public static void Stop()

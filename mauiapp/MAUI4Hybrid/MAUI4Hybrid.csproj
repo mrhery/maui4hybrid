@@ -64,7 +64,9 @@
 	  <None Remove="www\assets\images\maui4hybrid.png" />
 	  <None Remove="www\assets\js\script.js" />
 	  <None Remove="www\assets\vendor\jquery\jquery.js" />
+	  <None Remove="www\configure.json" />
 	  <None Remove="www\index.html" />
+	  <None Remove="www\widgets\bottom_bar.html" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -72,13 +74,16 @@
 	  <EmbeddedResource Include="www\assets\images\maui4hybrid.png" />
 	  <EmbeddedResource Include="www\assets\js\script.js" />
 	  <EmbeddedResource Include="www\assets\vendor\jquery\jquery.js" />
+	  <EmbeddedResource Include="www\configure.json" />
 	  <EmbeddedResource Include="www\index.html" />
+	  <EmbeddedResource Include="www\widgets\bottom_bar.html" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
 
 </Project>
