@@ -237,12 +237,6 @@ namespace MAUI4Hybrid
             {
                 configure = JsonConvert.DeserializeObject<ExpandoObject>(jsonContent);
             }
-            else
-            {
-                Debug.WriteLine("==============================");
-                Debug.WriteLine("json is null");
-                Debug.WriteLine("==============================");
-            }
         }
 
         static string GetEmbeddedResourceContent(string resourceName)
